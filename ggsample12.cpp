@@ -78,6 +78,9 @@ void app()
   // 図形の鏡像変換行列を mr に求める
   const GgMatrix mr(ggScale(1.0f, -1.0f, 1.0f));
 
+  // 鏡像変換行列の平行移動部分 mrt
+  const GgMatrix mrt(ggTranslate(0.0f, 1.0f, 0.0f));
+
   // 光源の材質
   const GgSimpleShader::LightBuffer lightBuffer(light);
 
@@ -97,7 +100,7 @@ void app()
     const GgMatrix mp(ggPerspective(0.5f, window.getAspect(), 1.0f, 15.0f));
 
     // 鏡像用のシェーダの選択
-    mirror.use(mp, mv * mm * window.getTrackball(), lightBuffer);
+    mirror.use(mp, mv * mr * mrt * window.getTrackball(), lightBuffer);
     lightBuffer.loadPosition(reflected.data());
 
     // 鏡像の描画
